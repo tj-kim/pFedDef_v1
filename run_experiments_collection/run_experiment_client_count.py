@@ -1,13 +1,6 @@
-"""Run Experiment
+"""Run Experiment Client Count
 
-This script allows to run one federated learning experiment; the experiment name, the method and the
-number of clients/tasks should be precised along side with the hyper-parameters of the experiment.
-
-The results of the experiment (i.e., training logs) are written to ./logs/ folder.
-
-This file can also be imported as a module and contains the following function:
-
-    * run_experiment - runs one experiments given its arguments
+This script sweeps the number of clients in the learning system, and trains many federated learning models consecutively from one count to another.
 """
 from utils.utils import *
 from utils.constants import *
@@ -39,31 +32,32 @@ import numba
 
 if __name__ == "__main__":
 
-
-    exp_names = ['c5','c10','c20','c30','c40']
-    adv_mode = True
-    
-    num_clients_list = [5,10,20,30,40]
+    ## INPUT GROUP 1 - experiment macro parameters ##
+    exp_names = ['c5','c10','c20','c30','c40'] # names of experiment when saving weights
+    adv_mode = True                            # whether or not to perform adv training
+    num_clients_list = [5,10,20,30,40]         # Number of clients to participate in training
+    ## END INPUT GROUP 1 ##
     
         
     for itt in range(len(exp_names)):
         
         print("running trial:", itt)
         
-        # Manually set argument parameters
+        
+        ## INPUT GROUP 2 - experiment macro parameters ##
         args_ = Args()
-        args_.experiment = "cifar10"
-        args_.method = 'FedAvg_adv'
+        args_.experiment = "cifar10"      # dataset name
+        args_.method = 'FedAvg_adv'       # Method of training
         args_.decentralized = False
         args_.sampling_rate = 1.0
         args_.input_dimension = None
         args_.output_dimension = None
-        args_.n_learners= 3
-        args_.n_rounds = 150
+        args_.n_learners= 3               # Number of hypotheses assumed in system
+        args_.n_rounds = 150              # Number of rounds training takes place
         args_.bz = 128
         args_.local_steps = 1
         args_.lr_lambda = 0
-        args_.lr = 0.03
+        args_.lr = 0.03                   # Learning rate
         args_.lr_scheduler = 'multi_step'
         args_.log_freq = 20
         args_.device = 'cuda'
@@ -74,19 +68,18 @@ if __name__ == "__main__":
         args_.locally_tune_clients = False
         args_.seed = 1234
         args_.verbose = 1
-        args_.save_path = 'weights/neurips/cifar/client_count/fedavg_adv_new/' + exp_names[itt]
+        args_.save_path = 'weights/cifar10/client_count/fedavg_adv_new/' + exp_names[itt] # weight save path
         args_.validation = False
-        args_.save_freq = 20
 
-        # Other Argument Parameters
-        Q = 10 # update per round
-        G = 0.15
-        num_clients = num_clients_list[itt] #50
-        S = 0.05 # Threshold
-        step_size = 0.01
-        K = 10
-        eps = 0.1
-
+        Q = 10                            # ADV dataset update freq
+        G = 0.15                          # Adversarial proportion aimed globally
+        num_clients = num_clients_list[itt] 
+        S = 0.05                          # Threshold param for robustness propagation
+        step_size = 0.01                  # Attack step size
+        K = 10                            # Number of steps when generating adv examples
+        eps = 0.1                         # Projection magnitude 
+        ## END INPUT GROUP 2 ##
+        
         # Randomized Parameters
         Ru = np.ones(num_clients)
         
@@ -94,7 +87,6 @@ if __name__ == "__main__":
         aggregator, clients = dummy_aggregator(args_, num_clients)
 
         if adv_mode:
-        # Set attack parameters
             x_min = torch.min(clients[0].altered_dataloader.x_data)
             x_max = torch.max(clients[0].altered_dataloader.x_data)
 
@@ -102,10 +94,10 @@ if __name__ == "__main__":
             atk_params = PGD_Params()
             atk_params.set_params(batch_size=1, iteration = K,
                                target = -1, x_val_min = x_min, x_val_max = x_max,
-                               step_size = 0.01, step_norm = "inf", eps = eps, eps_norm = 'inf')
+                               step_size = step_size, step_norm = "inf", eps = eps, eps_norm = 'inf')
 
             # Obtain the central controller decision making variables (static)
-            num_h = args_.n_learners= 3
+            num_h = args_.n_learners
             Du = np.zeros(len(clients))
 
             for i in range(len(clients)):
@@ -121,9 +113,7 @@ if __name__ == "__main__":
         while current_round <= args_.n_rounds:
 
             
-        # For regular em comment here to 
             if adv_mode:
-#             # If statement catching every Q rounds -- update dataset
                 if  current_round != 0 and current_round%Q == 0: # "ADV Iter"
                     Whu = np.zeros([num_clients,num_h]) # Hypothesis weight for each user
                     for i in range(len(clients)):
@@ -140,12 +130,10 @@ if __name__ == "__main__":
                     Fu = solve_proportions(G, num_clients, num_h, Du, Whu, S, Ru, step_size)
 
                     # Assign proportion and attack params
-                    # Assign proportion and compute new dataset
                     for i in range(len(clients)):
                         aggregator.clients[i].set_adv_params(Fu[i], atk_params)
                         aggregator.clients[i].update_advnn()
                         aggregator.clients[i].assign_advdataset()
-        # here
 
             aggregator.mix()
             

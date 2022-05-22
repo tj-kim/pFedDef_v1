@@ -24,7 +24,7 @@ The code from this repository has been heavily adapted from: [Federated Multi-Ta
 The following components of their work has been used as a basis for our work.
 - data folder with the data set downloading and data splitting
 - learner folder with learner and learners_ensemble classes
-- client.py, aggregator.py classes 
+- 'client.py', 'aggregator.py' classes 
 
 
 ## Our Contribution
@@ -33,16 +33,16 @@ We have added the following unique files for experiments:
 - Transfer_attacks folder and contents
     - Transfer attacks between one client to another in a federated learning setting
     - Boundary transferer used to measure inter-boundary distance as from: [The Space of Transferable Adversarial Examples](https://arxiv.org/abs/1704.03453)
-- solve_proportions() function from Transfer_attacks/TA_utils.py solves the robustness propagation problem given limited resources.
+- 'solve_proportions()' function from 'Transfer_attacks/TA_utils.py' solves the robustness propagation problem given limited resources.
     
 The following aspects of the FedEM code has been altered:
-- client.py now has adversarial training mechanisms, more detailed implementations of local tuning, and label swapping sybil attack mechanism
-- Aggregator has implementation of KRUM from [Machine Learning with Adversaries: Byzantine Tolerant Gradient Descent](https://papers.nips.cc/paper/2017/hash/f4b9ec30ad9f68f89b29639786cb62ef-Abstract.html) (work in progress)
+- 'client.py' now has adversarial training mechanisms, more detailed implementations of local tuning, and label swapping sybil attack mechanism
+- 'Aggregator.py' has implementation of KRUM from [Machine Learning with Adversaries: Byzantine Tolerant Gradient Descent](https://papers.nips.cc/paper/2017/hash/f4b9ec30ad9f68f89b29639786cb62ef-Abstract.html) (work in progress)
 
 
 ## Training
 
-The model weights can be trained given varying methods of adversarial training and aggregation method by running the .py files in the run_experiments_collection folder. Move the .py file to the root directory to run. Inside the file, there is a section of inputs.
+The model weights can be trained given varying methods of adversarial training and aggregation method by running the .py files in the 'run_experiments_collection' folder. Move the .py file to the root directory to run. Inside the file, there is a section of inputs.
 
 The following inputs are of importance: 
 - G: Adversarial dataset proportion globally
@@ -58,4 +58,9 @@ The scripts have been written in such a way that an individual script can be run
 
 ## Evaluation
 
-The evaluation of saved neural networks are performed in jupyter notebook instances found in the Evaluation folder. Individual notebooks load relevant weights and perform adversarial attacks on the models. 
+The evaluation of saved neural networks are performed in jupyter notebook instances found in the Evaluation folder. Individual notebooks load relevant weights and perform adversarial attacks on the models.
+
+The following evaluation tools are including:
+- loading a pre-trained group of federated learning models for different learning types, and performing transfer attack between clients and recording statistic
+- performing ensemble attack, where multiple clients jointly perform attacks by sharing gradient information as seen in [Ensemble adversarial black-box attacks against deep learning systems](https://www.sciencedirect.com/science/article/abs/pii/S0031320319304844)
+- Performing inter-boundary distance measurements between different models.

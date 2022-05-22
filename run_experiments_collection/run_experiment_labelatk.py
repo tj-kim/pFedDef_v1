@@ -1,13 +1,6 @@
-"""Run Experiment
+"""Run Experiment label atk
 
-This script allows to run one federated learning experiment; the experiment name, the method and the
-number of clients/tasks should be precised along side with the hyper-parameters of the experiment.
-
-The results of the experiment (i.e., training logs) are written to ./logs/ folder.
-
-This file can also be imported as a module and contains the following function:
-
-    * run_experiment - runs one experiments given its arguments
+This script runs training given that some clients have flipped labels to compromise model performance.
 """
 from utils.utils import *
 from utils.constants import *
@@ -39,9 +32,7 @@ import numba
 
 if __name__ == "__main__":
     
-#     exp_names = ['benign', 'adv']
-#     adv_mode = [False, True]
-    
+    # Input group 1
     exp_names = ['fedavg_adv', 'fedavg']
     exp_method = [ 'FedAvg_adv', 'FedAvg']
     exp_num_learners = [1,1]
@@ -77,7 +68,7 @@ if __name__ == "__main__":
         args_.validation = False
         args_.save_freq = 10
 
-                # Other Argument Parameters
+        # Other Argument Parameters
         Q = 10 # update per round
         G = 0.15
         num_clients = 40 # 40 for cifar 10, 50 for cifar 100
@@ -88,22 +79,18 @@ if __name__ == "__main__":
         prob = 0.8
         Ru = np.ones(num_clients)
 
-        num_classes = 10
-        atk_count = 10
+        num_classes = 10 # Number of classes in the data set we are training with
+        atk_count = 10   # Number of clients performing label swap attack
                 
         
         print("running trial:", itt, "out of", len(exp_names)-1)
         
         args_.save_path = 'weights/neurips/cifar/krum/just_attack/' + exp_names[itt]
-    
-#         if adv_mode[itt]:
-#             args_.method = "FedEM_adv"
-#         else:
-#             args_.method = "FedEM"
-                
+
         # Generate the dummy values here
         aggregator, clients = dummy_aggregator(args_, num_clients)
         
+        # Perform label swapping attack for a set number of clients
         for i in range(atk_count):
             aggregator.clients[i].swap_dataset_labels(num_classes)
 
@@ -151,10 +138,8 @@ if __name__ == "__main__":
 
                     # Solve for adversarial ratio at every client
                     Fu = solve_proportions_dummy(G, num_clients, num_h, Du, Whu, S, Ru, step_size)
-    #                 print(Fu)
 
                     # Assign proportion and attack params
-                    # Assign proportion and compute new dataset
                     for i in range(len(clients)):
                         aggregator.clients[i].set_adv_params(Fu[i], atk_params)
                         aggregator.clients[i].update_advnn()

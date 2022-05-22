@@ -1,13 +1,7 @@
-"""Run Experiment
+"""Run Experiment propagation
 
-This script allows to run one federated learning experiment; the experiment name, the method and the
-number of clients/tasks should be precised along side with the hyper-parameters of the experiment.
-
-The results of the experiment (i.e., training logs) are written to ./logs/ folder.
-
-This file can also be imported as a module and contains the following function:
-
-    * run_experiment - runs one experiments given its arguments
+Comparing with and without propagation of pFedDef algorithm
+Sweeping the number of clients with ample resources that can bring up global proportion of adv training set.
 """
 from utils.utils import *
 from utils.constants import *
@@ -41,6 +35,7 @@ if __name__ == "__main__":
     
     exp_names = ['prop_n1', 'prop_n2', 'prop_n5', 'prop_n10', 'prop_n20', 'prop_n40']
     ample_client_count = [1,2,5,10,20,40]
+    prop_mode = [True, True, True, True, True, True] # False to have no propagation
         
     # Manually set argument parameters
     args_ = Args()
@@ -96,7 +91,7 @@ if __name__ == "__main__":
         
         print("running trial:", itt, "out of", len(exp_names)-1)
         
-        args_.save_path = 'weights/neurips/cifar100/prop/with_G05/' + exp_names[itt]
+        args_.save_path = 'weights/cifar10/pFedDef_propagation/' + exp_names[itt]
 
         
         # Ru = np.ones(num_clients)
@@ -130,7 +125,6 @@ if __name__ == "__main__":
 
             # If statement catching every Q rounds -- update dataset
             if  current_round != 0 and current_round%Q == 0: # 
-                # print("Round:", current_round, "Calculation Adv")
                 # Obtaining hypothesis information
                 Whu = np.zeros([num_clients,num_h]) # Hypothesis weight for each user
                 for i in range(len(clients)):
@@ -144,14 +138,12 @@ if __name__ == "__main__":
                 Wh = np.sum(Whu,axis=0)/num_clients
 
                 # Solve for adversarial ratio at every client
-#                 if exp_names[itt] == "no_macro_resources":
-#                     Fu = solve_proportions_dummy(G, num_clients, num_h, Du, Whu, S, Ru, step_size)
-#                 else:
-                Fu = solve_proportions(G, num_clients, num_h, Du, Whu, S, Ru, step_size)
-                print(Fu)
+                if prop_mode[itt] == "no_macro_resources":
+                    Fu = solve_proportions_dummy(G, num_clients, num_h, Du, Whu, S, Ru, step_size)
+                else:
+                    Fu = solve_proportions(G, num_clients, num_h, Du, Whu, S, Ru, step_size)
 
                 # Assign proportion and attack params
-                # Assign proportion and compute new dataset
                 for i in range(len(clients)):
                     aggregator.clients[i].set_adv_params(Fu[i], atk_params)
                     aggregator.clients[i].update_advnn()

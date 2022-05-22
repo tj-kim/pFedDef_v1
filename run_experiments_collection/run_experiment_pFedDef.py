@@ -1,13 +1,6 @@
-"""Run Experiment
+"""Run Experiment pFedDef
 
-This script allows to run one federated learning experiment; the experiment name, the method and the
-number of clients/tasks should be precised along side with the hyper-parameters of the experiment.
-
-The results of the experiment (i.e., training logs) are written to ./logs/ folder.
-
-This file can also be imported as a module and contains the following function:
-
-    * run_experiment - runs one experiments given its arguments
+This script runs a pFedDef training on the FedEM model.
 """
 from utils.utils import *
 from utils.constants import *
@@ -39,31 +32,32 @@ import numba
 
 if __name__ == "__main__":
     
-    exp_names = ['g0_1', 'g0_5', 'g1', 'g2', 'g4']
-    
-    G_val = [0.01,0.05,0.1,0.2,0.4]
+    ## INPUT GROUP 1 - experiment macro parameters ##
+    exp_names = ['pfeddef']
+    G_val = [0.4]
     n_learners = 3
+    ## END INPUT GROUP 1 ##
     
     for itt in range(len(exp_names)):
         
         print("running trial:", itt)
         
-        # Manually set argument parameters
+        ## INPUT GROUP 2 - experiment macro parameters ##
         args_ = Args()
-        args_.experiment = "cifar10"
-        args_.method = "FedEM_adv"
+        args_.experiment = "cifar10"      # dataset name
+        args_.method = 'FedAvg_adv'       # Method of training
         args_.decentralized = False
         args_.sampling_rate = 1.0
         args_.input_dimension = None
         args_.output_dimension = None
-        args_.n_learners= n_learners
-        args_.n_rounds = 100
+        args_.n_learners= n_learners      # Number of hypotheses assumed in system
+        args_.n_rounds = 150              # Number of rounds training takes place
         args_.bz = 128
         args_.local_steps = 1
         args_.lr_lambda = 0
-        args_.lr =0.03
+        args_.lr = 0.03                   # Learning rate
         args_.lr_scheduler = 'multi_step'
-        args_.log_freq = 10
+        args_.log_freq = 20
         args_.device = 'cuda'
         args_.optimizer = 'sgd'
         args_.mu = 0
@@ -72,20 +66,20 @@ if __name__ == "__main__":
         args_.locally_tune_clients = False
         args_.seed = 1234
         args_.verbose = 1
-        args_.save_path = 'weights/neurips/celeba/G_sweep/' + exp_names[itt]
+        args_.save_path = 'weights/cifar10/pFedDef/' + exp_names[itt] # weight save path
         args_.validation = False
 
-        # Other Argument Parameters
-        Q = 10 # update per round
-        G = G_val[itt]
-        num_clients = 40
-        S = 0.05 # Threshold
-        step_size = 0.01
-        K = 10
-        eps = 0.1
+        Q = 10                            # ADV dataset update freq
+        G = G_val[itt]                    # Adversarial proportion aimed globally
+        num_clients = 40                  # Number of clients to train with
+        S = 0.05                          # Threshold param for robustness propagation
+        step_size = 0.01                  # Attack step size
+        K = 10                            # Number of steps when generating adv examples
+        eps = 0.1                         # Projection magnitude 
+        ## END INPUT GROUP 2 ##
+        
 
         # Randomized Parameters
-        # Ru = np.random.uniform(low=R_val[itt]-0.1, high=R_val[itt]+0.1, size=num_clients)
         Ru = np.ones(num_clients)
         
         # Generate the dummy values here
@@ -117,7 +111,6 @@ if __name__ == "__main__":
 
             # If statement catching every Q rounds -- update dataset
             if  current_round != 0 and current_round%Q == 0: # 
-                # print("Round:", current_round, "Calculation Adv")
                 # Obtaining hypothesis information
                 Whu = np.zeros([num_clients,num_h]) # Hypothesis weight for each user
                 for i in range(len(clients)):
@@ -132,7 +125,6 @@ if __name__ == "__main__":
 
                 # Solve for adversarial ratio at every client
                 Fu = solve_proportions(G, num_clients, num_h, Du, Whu, S, Ru, step_size)
-                # print(Fu)
 
                 # Assign proportion and attack params
                 # Assign proportion and compute new dataset

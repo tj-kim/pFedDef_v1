@@ -1,13 +1,6 @@
-"""Run Experiment
+"""Run Experiment progressive tuning
 
-This script allows to run one federated learning experiment; the experiment name, the method and the
-number of clients/tasks should be precised along side with the hyper-parameters of the experiment.
-
-The results of the experiment (i.e., training logs) are written to ./logs/ folder.
-
-This file can also be imported as a module and contains the following function:
-
-    * run_experiment - runs one experiments given its arguments
+After performing federated training, FedEM and FedAvg (benign or adv training) clients will train for number of steps alone to fine tune their models.
 """
 from utils.utils import *
 from utils.constants import *
@@ -38,25 +31,6 @@ import numba
 
 
 if __name__ == "__main__":
-    
-
-#     exp_names = ['fedavg_adv', 'fedEM_adv', 'fedavg', 'fedEM']
-#     exp_method = ['FedAvg_adv', 'FedEM_adv', 'FedAvg', 'FedEM']
-#     exp_num_learners = [1,3,1,3]
-#     exp_lr = 0.03
-#     adv_mode = [True, True, False, False]
-
-#     exp_names = ['fedavg_adv', 'fedEM_adv']
-#     exp_method = [ 'FedAvg_adv', 'FedEM_adv']
-#     exp_num_learners = [1,3]
-#     exp_lr = 0.01
-#     adv_mode = [ True, True]
-    
-#     exp_names = ['fedavg_adv']
-#     exp_method = [ 'FedAvg_adv']
-#     exp_num_learners = [1]
-#     exp_lr = 0.03
-#     adv_mode = [ True]
 
     exp_names = ['fedEM']
     exp_method = ['FedEM']
@@ -65,8 +39,8 @@ if __name__ == "__main__":
     adv_mode = [False]
     
     # When we will save the model
-    tuning_steps = [5,10,20,30,40]
-    tuning_increments = [5,5,10,30,40]
+    tuning_steps = [5,10,20,30,40]     # number of steps to tune alone without communication
+    tuning_increments = [5,5,10,30,40] # Differences from previous vector tuning_steps
     
         
     for itt in range(len(exp_names)):
@@ -97,7 +71,7 @@ if __name__ == "__main__":
         args_.locally_tune_clients = False
         args_.seed = 1234
         args_.verbose = 1
-        args_.save_path = 'weights/neurips/cifar/local_tuning_03/' + exp_names[itt]
+        args_.save_path = 'weights/cifar10/progressive_tuning/' + exp_names[itt]
         args_.validation = False
         args_.save_freq = 20
         args_.tune_steps = 1
@@ -112,7 +86,6 @@ if __name__ == "__main__":
         eps = 0.1
 
         # Randomized Parameters
-        # Ru = np.random.uniform(0, 0.5, size=num_clients)
         Ru = np.ones(num_clients)
         
         # Generate the dummy values here
