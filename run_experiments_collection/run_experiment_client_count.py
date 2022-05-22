@@ -88,7 +88,6 @@ if __name__ == "__main__":
         eps = 0.1
 
         # Randomized Parameters
-        # Ru = np.random.uniform(0, 0.5, size=num_clients)
         Ru = np.ones(num_clients)
         
         # Generate the dummy values here
