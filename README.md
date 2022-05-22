@@ -16,6 +16,9 @@ To install requirements:
 pip install -r requirements.txt
 ```
 
+## Data Sets
+
+The CIFAR-10 and CIFAR-100 data sets are readily available to set up with the existing infrastructure of FedEM. The CelebA data set can be found and downloaded at [LEAF](https://leaf.cmu.edu/), while the MovieLens data set is found at [MovieLens](https://grouplens.org/datasets/movielens/).
 
 ## Original Repository
 
