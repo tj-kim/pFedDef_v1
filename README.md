@@ -61,7 +61,7 @@ The scripts have been written in such a way that an individual script can be run
 
 ## Evaluation
 
-The evaluation of saved neural networks are performed in jupyter notebook instances found in the Evaluation folder. Individual notebooks load relevant weights and perform adversarial attacks on the models.
+The evaluation of saved neural networks are performed in jupyter notebook instances found in the Evaluation folder. Individual notebooks load relevant weights and perform adversarial attacks on the models. Note that the jupyter notebook environment and package dependency is equivalent to the .py files used to run the experiments.
 
 The following evaluation tools are included:
 - loading a pre-trained group of federated learning models for different learning types, and performing transfer attack between clients and recording statistic
