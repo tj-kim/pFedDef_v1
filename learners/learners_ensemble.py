@@ -124,7 +124,6 @@ class LearnersEnsemble(object):
     def fit_epochs_multiple_iterators(self, iterators, n_epochs, weights=None):
         """
         same function as above -- except each learner obtains a separate data iterator
-        TJ Kim - 3.02.22 CMU
         """
         client_updates = torch.zeros(len(self.learners), self.model_dim)
 
