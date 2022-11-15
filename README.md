@@ -74,6 +74,30 @@ The following evaluation tools are included:
 - performing ensemble attack, where multiple clients jointly perform attacks by sharing gradient information as seen in [Ensemble adversarial black-box attacks against deep learning systems](https://www.sciencedirect.com/science/article/abs/pii/S0031320319304844)
 - Performing inter-boundary distance measurements between different models.
 
+## Citation
+
+If you use our code or wish to refer to our results, please use the following BibTex entry:
+
+'''
+@misc{https://doi.org/10.48550/arxiv.2209.08412,
+  doi = {10.48550/ARXIV.2209.08412},
+  
+  url = {https://arxiv.org/abs/2209.08412},
+  
+  author = {Kim, Taejin and Singh, Shubhranshu and Madaan, Nikhil and Joe-Wong, Carlee},
+  
+  keywords = {Machine Learning (cs.LG), Cryptography and Security (cs.CR), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {pFedDef: Defending Grey-Box Attacks for Personalized Federated Learning},
+  
+  publisher = {arXiv},
+  
+  year = {2022},
+  
+  copyright = {Creative Commons Attribution 4.0 International}
+}
+'''
+
 ## License 
 
 Copyright 2022, Taejin Kim
