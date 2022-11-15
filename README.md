@@ -76,6 +76,7 @@ The following evaluation tools are included:
 
 ## License 
 
+Copyright 2021, omarfoq
 Copyright 2022, Taejin Kim
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -89,3 +90,5 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+Copied and adapted from "Federated Multi-Task Learning under a Mixture of Distributions" (https://github.com/omarfoq/FedEM)
