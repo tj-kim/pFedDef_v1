@@ -78,7 +78,7 @@ The following evaluation tools are included:
 
 If you use our code or wish to refer to our results, please use the following BibTex entry:
 
-'''
+```
 @misc{https://doi.org/10.48550/arxiv.2209.08412,
   doi = {10.48550/ARXIV.2209.08412},
   
@@ -96,7 +96,7 @@ If you use our code or wish to refer to our results, please use the following Bi
   
   copyright = {Creative Commons Attribution 4.0 International}
 }
-'''
+```
 
 ## License 
 
