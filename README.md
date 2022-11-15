@@ -73,3 +73,19 @@ The following evaluation tools are included:
 - loading a pre-trained group of federated learning models for different learning types, and performing transfer attack between clients and recording statistic
 - performing ensemble attack, where multiple clients jointly perform attacks by sharing gradient information as seen in [Ensemble adversarial black-box attacks against deep learning systems](https://www.sciencedirect.com/science/article/abs/pii/S0031320319304844)
 - Performing inter-boundary distance measurements between different models.
+
+## License 
+
+Copyright 2022, Taejin Kim
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
