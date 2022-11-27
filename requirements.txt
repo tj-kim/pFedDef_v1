@@ -11,3 +11,5 @@ tensorboard
 Cython==0.29.26
 pandas==1.3.3
 scipy==1.7.1
+
+# All experiments require NVIDIA GPU and CUDA library
