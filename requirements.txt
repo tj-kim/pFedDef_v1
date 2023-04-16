@@ -3,7 +3,7 @@ tqdm
 scikit-learn==0.24.2
 numpy==1.20.3
 torch == 1.7.1
-matplotlib == 3.1.1
+matplotlib
 networkx == 2.5.1
 cvxpy
 torchvision

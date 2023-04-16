@@ -1,0 +1,25 @@
+setting = FedEM ## 0 Method of training ##
+## FedEM, FedAvg, or local##
+
+experiment = cifar10 ## 1 Dataset name ##
+decentralized = False ## 2 Decentralized ##
+sampling_rate = 1.0 ## 3 Sampling rate ##
+input_dimension = None ## 4 Input dimension ##
+output_dimension = None ## 5 Output dimension ##
+n_rounds = 10 ## 6 Number of rounds training takes place ##
+bz = 128 ## 7 bz ##
+local_steps = 1 ## 8 Local steps ##
+lr_lambda = 0 ## 9 Learning rate lambda ##
+lr = 0.03 ## 10 Learning rate ##
+lr_scheduler = multi_step ## 11 Learning rate scheduler ##
+log_freq = 10 ## 12 Log Frequency ##
+device = cuda ## 13 Device ##
+optimizer = sgd ## 14 Device ##
+mu = 0 ## 15 mu ##
+communication_probability = 0.1 ## 16 Communication probability ##
+q = 1 ## 17 q ##
+locally_tune_clients = False ## 18 Locally tune clients ##
+seed = 1234 ## 19 Seed ##
+verbose = 1 ## 20 Verbose ##
+weight_save_path = weights/cifar10/pFedDef/fedem ## 21 Weight save path##
+validation = False ## 22 Validation ##
