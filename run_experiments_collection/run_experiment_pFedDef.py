@@ -45,7 +45,7 @@ if __name__ == "__main__":
         ## INPUT GROUP 2 - experiment macro parameters ##
         args_ = Args()
         args_.experiment = "cifar10"      # dataset name
-        args_.method = 'FedAvg_adv'       # Method of training
+        args_.method = 'FedEM_adv'       # Method of training
         args_.decentralized = False
         args_.sampling_rate = 1.0
         args_.input_dimension = None
