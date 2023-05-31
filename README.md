@@ -17,6 +17,8 @@ pip install -r requirements.txt
 ```
 
 All experiments require NVIDIA GPU and CUDA library.
+Python version should be 3.8.6.
+All experiments of this paper is run on the Amazon EC2 instance G4DN.XLARGE.
 
 ## Data Sets
 
@@ -41,17 +43,23 @@ We have added the following unique files for experiments:
 - Transfer_attacks folder and contents
     - Transfer attacks between one client to another in a federated learning setting
     - Boundary transferer used to measure inter-boundary distance as from: [The Space of Transferable Adversarial Examples](https://arxiv.org/abs/1704.03453)
+    - Capability of ensemble attack and alternative transferbility metrics
 - 'solve_proportions()' function from 'Transfer_attacks/TA_utils.py' solves the robustness propagation problem given limited resources.
     
 The following aspects of the FedEM code has been altered:
 
 - 'client.py' now has adversarial training mechanisms, more detailed implementations of local tuning, and label swapping sybil attack mechanism
-- 'Aggregator.py' has implementation of KRUM from [Machine Learning with Adversaries: Byzantine Tolerant Gradient Descent](https://papers.nips.cc/paper/2017/hash/f4b9ec30ad9f68f89b29639786cb62ef-Abstract.html) (work in progress)
 
 
 ## Training
 
-The model weights can be trained given varying methods of adversarial training and aggregation method by running the .py files in the 'run_experiments_collection' folder. Move the .py file to the root directory to run. Inside the file, there is a section of inputs.
+The model weights can be trained given varying methods of adversarial training and aggregation method by running the .py files in the 'run_experiments_collection' folder. Move the .py file to the root directory and use the following code to run.
+
+```
+python run_experiment_pFedDef.py train_model_input.txt
+```
+
+Inside the train_model_input.txt, there are inputs for the trained model.
 
 The following inputs are of importance: 
 
@@ -75,21 +83,26 @@ The following evaluation tools are included:
 - loading a pre-trained group of federated learning models for different learning types, and performing transfer attack between clients and recording statistic
 - performing ensemble attack, where multiple clients jointly perform attacks by sharing gradient information as seen in [Ensemble adversarial black-box attacks against deep learning systems](https://www.sciencedirect.com/science/article/abs/pii/S0031320319304844)
 - Performing inter-boundary distance measurements between different models.
+- Measuring emprical transfer ability metrics such as gradient alignment.
+
+For the first evaluation, it could also run by the following code
+```
+python evaluation.py evaluation_input.txt evaluation_output.txt
+```
+evaluation_input.txt includes the input that you need to change, and the evaluation_output.txt would contain the result of the evaluation.
 
 ## Citation
 
 If you use our code or wish to refer to our results, please use the following BibTex entry:
 
 ```
-@misc{https://doi.org/10.48550/arxiv.2209.08412,
-  doi = {10.48550/ARXIV.2209.08412},
-  url = {https://arxiv.org/abs/2209.08412},
-  author = {Kim, Taejin and Singh, Shubhranshu and Madaan, Nikhil and Joe-Wong, Carlee},
-  keywords = {Machine Learning (cs.LG), Cryptography and Security (cs.CR), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  title = {pFedDef: Defending Grey-Box Attacks for Personalized Federated Learning},
-  publisher = {arXiv},
-  year = {2022},
-  copyright = {Creative Commons Attribution 4.0 International}
+@misc{kim2023characterizing,
+      title={Characterizing Internal Evasion Attacks in Federated Learning},
+      author={Taejin Kim and Shubhranshu Singh and Nikhil Madaan and Carlee Joe-Wong},
+      year={2023},
+      eprint={2209.08412},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
 }
 ```
 
@@ -110,3 +123,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 FedEM learning framework copied and adapted from "Federated Multi-Task Learning under a Mixture of Distributions" (https://github.com/omarfoq/FedEM) (Copyright 2021, omarfoq)
+
+Managed by Yixin Yang
+
+## Contact
+Taejin Kim
+Email: Taejin.Kim@sv.cmu.edu
+Yixin Yang
+Email: yixinyan@andrew.cmu.edu / yixinyangella@gmail.com

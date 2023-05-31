@@ -1,0 +1,48 @@
+## The following inputs are of importance: 
+
+- G: Adversarial dataset proportion globally
+- Q: Number of rounds between adv data generation
+- K: Number of steps used to perturbed dataset when generating adversarial examples
+- eps: Magnitude of projection during projected gradient descent
+- args_.experiment: type of dataset to run (cifar10, cifar100, celeba)
+- args_.method: training method to use ('FedAvg', 'FedAvg_adv', 'FedEM', 'FedEM_adv', 'local', 'local_adv')
+- args_.n_rounds: Number of rounds to run training for
+- args_.save_path: Location to save weights ##
+exp_names = local ## 0 Name of current experiment ##
+G_val = 0.4 ## 1 G_val ##
+
+n_learners = 1 ## 2 Number of hypotheses assumed in system ##
+## n_learners = 3 for FedEM and FedEM_adv##
+## n_learners = 1 for FedAvg, FedAvg_adv, local, and local_adv ##
+
+experiment = cifar10 ## 3 Dataset name ##
+method = local ## 4 Method of training ##
+## 6 different types: FedEM, FedEM_adv, FedAvg, FedAvg_adv, local, and local_adv##
+
+decentralized = False ## 5 Decentralized ##
+sampling_rate = 1.0 ## 6 Sampling rate ##
+input_dimension = None ## 7 Input dimension ##
+output_dimension = None ## 8 Output dimension ##
+n_rounds = 150 ## 9 Number of rounds training takes place ##
+bz = 128 ## 10 bz ##
+local_steps = 1 ## 11 Local steps ##
+lr_lambda = 0 ## 12 Learning rate lambda ##
+lr = 0.03 ## 13 Learning rate ##
+lr_scheduler = multi_step ## 14 Learning rate scheduler ##
+log_freq = 20 ## 15 Log Frequency ##
+device = cuda ## 16 Device ##
+optimizer = sgd ## 17 Device ##
+mu = 0 ## 18 mu ##
+communication_probability = 0.1 ## 19 Communication probability ##
+q = 1 ## 20 q ##
+locally_tune_clients = False ## 21 Locally tune clients ##
+seed = 1234 ## 22 Seed ##
+verbose = 1 ## 23 Verbose ##
+weight_save_path = weights/cifar10/pFedDef/local ## 24 Weight save path##
+validation = False ## 25 Validation ##
+Q = 10 ## 26 ADV dataset update freq ##                            
+num_clients = 40 ## 27 Number of clients to train with ##
+S = 0.05 ## 28 Threshold param for robustness propagation ##
+step_size = 0.01 ## 29 Attack step size ##
+K = 10 ## 30 Number of steps when generating adv examples ##
+eps = 0.1 ## 31 Projection magnitude ##
